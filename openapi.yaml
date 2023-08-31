@@ -1,0 +1,3634 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: Route Mobile Email API Documentation
+  description: >-
+    Welcome to the Route Mobile developer hub. You'll find comprehensive Email
+    API documentation to help you start working with Route Mobile as quickly as
+    possible, as well as support if you get stuck. Let's jump right in!
+  contact:
+    url: https://developers.routemobile.com/
+    name: 'Route Mobile Development '
+servers:
+  - url: https://api.us1-mta1.sendclean.net
+paths:
+  /v1.0/settings/addSmtp:
+    post:
+      tags:
+        - Email - Enterprise
+        - SMTP User Call
+      summary: Add a new SMTP User
+      description: Add a new SMTP User
+      operationId: addANewSmtpUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                owner_id:
+                  type: string
+                  description: >-
+                    The unique identifier of the owner of the SMTP user;
+                    requires associating the user with a specific account or
+                    organization within your system.
+                token:
+                  type: string
+                  description: >-
+                    The authentication token that authorizes the request to add
+                    a new SMTP user.
+                total_limit:
+                  type: integer
+                  description: >-
+                    The maximum number of emails the SMTP user is allowed to
+                    send within a specified time frame.
+                hourly_limit:
+                  type: integer
+                  description: The number of emails the user can send in a single hour.
+              required:
+                - owner_id
+                - token
+                - total_limit
+                - hourly_limit
+            examples:
+              Example 1:
+                value:
+                  owner_id: example id
+                  token: example token
+                  total_limit: 100
+                  hourly_limit: 10
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: >-
+                      The status of the API request, indicating whether the user
+                      addition was successful.
+                  message:
+                    type: string
+                    description: The response message, providing context on the status.
+                  smtp_user_name:
+                    type: string
+                    description: The username of the newly created SMTP user.
+                  smtp_password:
+                    type: string
+                    description: The password associated with the new SMTP user.
+              examples:
+                Example 1:
+                  value:
+                    status: success
+                    message: SMTP User Created
+                    smtp_user_name: insert.smtpUserName
+                    smtp_password: insert.password
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      description: >-
+                        The status of the error response, indicating that an
+                        error occurred.
+                    code:
+                      type: integer
+                      description: >-
+                        An error code associated with the specific type of
+                        error. In this example, it is set to -1.
+                    type:
+                      type: string
+                      description: >-
+                        The type of error that occurred. In this case, it is a
+                        "ValidationError", indicating that there was a problem
+                        with the data provided in the request.
+                    message:
+                      type: string
+                      description: >-
+                        An error message that provides specific details about
+                        the validation error.
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: ValidationError
+                    message:
+                      - total_limit and hourly_limit required
+                      - total_limit and hourly_limit should digits only
+                      - total_limit and hourly_limit should be greater than zero
+                      - You reached the max SMTP user
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: >-
+                      The status of the error response, indicating that an error
+                      occurred. In this example, it is set to "error".
+                  code:
+                    type: integer
+                    description: >-
+                      An error code associated with the specific type of error.
+                      In this example, it is set to -1.
+                  type:
+                    type: string
+                    description: >-
+                      The type of error that occurred. Here, it is an
+                      "AuthenticationError", which signifies that there was an
+                      issue with authentication or authorization.
+                  message:
+                    type: string
+                    description: >-
+                      A specific error message providing details about the
+                      unauthorized access error.
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: AuthenticationError
+                    message: Owner Id and Token MisMatch
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: >-
+                      The status of the error response, indicating that an error
+                      occurred. In this example, it is set to "error".
+                  code:
+                    type: integer
+                    description: ' An error code associated with the specific type of error. In this example, it is set to -1.'
+                  type:
+                    type: string
+                    description: >-
+                      The type of error that occurred. Here, it is specified as
+                      "Invalid Request", indicating that the request made to the
+                      API is invalid.
+                  message:
+                    type: string
+                    description: >-
+                      A descriptive error message detailing the nature of the
+                      error. 
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: Invalid Request
+                    message: Page Not Found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: >-
+                      The status of the error response, indicating that an error
+                      occurred. In this example, it is set to "error".
+                  code:
+                    type: integer
+                    description: >-
+                      An error code associated with the specific type of error.
+                      In this example, it is set to -1.
+                  type:
+                    type: string
+                    description: >-
+                      The type of error that occurred. Here, it is specified as
+                      "GeneralError", indicating a general or unspecified error
+                      on the server side.
+                  message:
+                    type: string
+                    description: >-
+                      A descriptive error message explaining the nature of the
+                      error. 
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: GeneralError
+                    message: Unable to process your request
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+  /v1.0/settings/editSmtp:
+    post:
+      tags:
+        - Email - Enterprise
+        - SMTP User Call
+      summary: Edit SMTP User
+      description: Edit SMTP User
+      operationId: editSmtpUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                owner_id:
+                  type: string
+                  description: "The unique identifier of the owner of the SMTP user.\r\n"
+                token:
+                  type: string
+                  description: "The authentication token that authorizes the request to edit a new SMTP user.\r\n"
+                SendCleanTES_APP_DOMAIN:
+                  type: string
+                  description: "The domain associated with the SMTP user for sending transactional emails.\r\n"
+                smtp_user_name:
+                  type: string
+                  description: "The username of the SMTP user. \r\n"
+                total_limit:
+                  type: integer
+                  description: "The maximum number of emails the SMTP user is allowed to send within a specified time frame.\r\n"
+                hourly_limit:
+                  type: integer
+                  description: "The number of emails the user can send in a single hour.\r\n"
+                status:
+                  type: string
+                  description: "The updated status of the SMTP user account. It indicates whether the user account is active or inactive.\r\n"
+              required:
+                - owner_id
+                - token
+                - smtp_user_name
+                - total_limit
+                - hourly_limit
+                - status
+            examples:
+              Example 1:
+                value:
+                  owner_id: example id
+                  token: example token
+                  SendCleanTES_APP_DOMAIN: Optional Value
+                  smtp_user_name: smtp12345
+                  total_limit: 80
+                  hourly_limit: 15
+                  status: Disable
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the API request indicates whether the SMTP user edit was successful.\r\n"
+                  message:
+                    type: string
+                    description: "The response message, providing context on the status.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: success
+                    message: SMTP User Updated
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. In this case, it is a \"ValidationError\", indicating that there was a problem with the data provided in the request.\r\n\r\n"
+                  message:
+                    type: array
+                    description: "An error message that provides specific details about the validation error.\r\n\r\n"
+                    items:
+                      type: string
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: ValidationError
+                    message: >-
+                      smtp user required !! || total_limit should only be in
+                      digits !! || total_limit should be greater than zero !! ||
+                      hourly_limit should only be in digits !! || hourly_limit
+                      should be greater than zero !! || No update field given !!
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is an \"AuthenticationError\", which signifies that there was an issue with authentication or authorization.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A specific error message providing details about the unauthorized access error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: AuthenticationError
+                    message: Owner Id and Token MisMatch
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"Invalid Request\", indicating that the request made to the API is invalid.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message detailing the nature of the error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type:
+                      name: Invalid Request
+                    message: Page Not Found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"GeneralError\", indicating a general or unspecified error on the server side.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message explaining the nature of the error.\r\n\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: GeneralError
+                    message: Unable to process your request
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+  /v1.0/settings/resetSmtpPassword:
+    post:
+      tags:
+        - Email - Enterprise
+        - SMTP User Call
+      summary: Password Reset for SMTP user
+      description: Password Reset for SMTP user
+      operationId: passwordResetForSmtpUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                owner_id:
+                  type: string
+                  description: The unique identifier of the owner of the SMTP user.
+                token:
+                  type: string
+                  description: >-
+                    The authentication token that authorizes the request to
+                    reset the password for the SMTP user.
+                smtp_user_name:
+                  type: string
+                  description: 'The username of the SMTP user. '
+              required:
+                - owner_id
+                - token
+                - smtp_user_name
+            examples:
+              Example 1:
+                value:
+                  owner_id: example id
+                  token: example token
+                  smtp_user_name: smtp12345
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the API request, indicating whether the user password reset was successful.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "The response message, providing context on the status.\r\n\r\n"
+                  smtp_user_name:
+                    type: string
+                    description: "The username of the SMTP user.\r\n\r\n"
+                  smtp_password:
+                    type: string
+                    description: "The password associated with the SMTP user.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: success
+                    message: password reset
+                    smtp_user_name: smtpUserName
+                    smtp_password: password
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. In this case, it is a \"ValidationError\", indicating that there was a problem with the data provided in the request.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "An error message that provides specific details about the validation error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: ValidationError
+                    message: smtp_user_name required !!'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is an \"AuthenticationError\", which signifies that there was an issue with authentication or authorization.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A specific error message providing details about the unauthorized access error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: AuthenticationError
+                    message: Owner Id and Token MisMatch
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"Invalid Request\", indicating that the request made to the API is invalid.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message detailing the nature of the error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: Invalid Request
+                    message: Page Not Found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"GeneralError\", indicating a general or unspecified error on the server side.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message explaining the nature of the error.\r\n\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: GeneralError
+                    message: Unable to process your request
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+  /v1.0/settings/listSmtp:
+    post:
+      tags:
+        - Email - Enterprise
+        - SMTP User Call
+      summary: List SMTP users
+      description: List SMTP users
+      operationId: listSmtpUsers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                owner_id:
+                  type: string
+                  description: The unique identifier of the owner of the SMTP user.
+                token:
+                  type: string
+                  description: >-
+                    The authentication token that authorizes the request to all
+                    SMTP users.
+              required:
+                - owner_id
+                - token
+            examples:
+              Example 1:
+                value:
+                  owner_id: 45303xxx
+                  token: px1INmm0P0Ip75Wyxxxx
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the API request.\r\n\r\n"
+                  smtp_list:
+                    type: string
+                    description: The list of all SMTP users.
+              examples:
+                Example 1:
+                  value:
+                    status: success
+                    smtp_list: finalRes
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. In this case, it is a \"ValidationError\", indicating that there was a problem with the data provided in the request.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "An error message that provides specific details about the validation error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: ValidationError
+                    message: user_id required !!
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is an \"AuthenticationError\", which signifies that there was an issue with authentication or authorization.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A specific error message providing details about the unauthorized access error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: AuthenticationError
+                    message: Owner Id and Token MisMatch
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"Invalid Request\", indicating that the request made to the API is invalid.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message detailing the nature of the error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: Invalid Request
+                    message: Page Not Found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"GeneralError\", indicating a general or unspecified error on the server side.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message explaining the nature of the error.\r\n\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: GeneralError
+                    message: Unable to process your request
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+  /v1.0/settings/addSendingDomain:
+    post:
+      tags:
+        - Email - Enterprise
+        - Sending Domain Calls
+      summary: Add a new Sending Domains
+      description: Add a new Sending Domains
+      operationId: addANewSendingDomains
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                owner_id:
+                  type: string
+                  description: The unique identifier of the owner of the sending domain.
+                token:
+                  type: string
+                  description: >-
+                    The authentication token that authorizes the request to add
+                    a new sending domain.
+                domain:
+                  type: string
+                  description: 'The sending domain that you want to add to the Email API. '
+              required:
+                - owner_id
+                - token
+                - domain
+            examples:
+              Example 1:
+                value:
+                  owner_id: example id
+                  token: example token
+                  domain: abc.com
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the API request indicates whether the new sending domains addition was successful.\r\n"
+                  message:
+                    type: string
+                    description: "The response message, providing context on the status.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: success
+                    message: Sending Domain Added
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. In this case, it is a \"ValidationError\", indicating that there was a problem with the data provided in the request.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "An error message that provides specific details about the validation error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: ValidationError
+                    message: domain name required !!
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is an \"AuthenticationError\", which signifies that there was an issue with authentication or authorization.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A specific error message providing details about the unauthorized access error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: AuthenticationError
+                    message: Owner Id and Token MisMatch
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"Invalid Request\", indicating that the request made to the API is invalid.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message detailing the nature of the error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: Invalid Request
+                    message: Page Not Found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"GeneralError\", indicating a general or unspecified error on the server side.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message explaining the nature of the error.\r\n\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: GeneralError
+                    message: Unable to process your request
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+  /v1.0/settings/checkSendingDomain:
+    post:
+      tags:
+        - Email - Enterprise
+        - Sending Domain Calls
+      summary: Check Sending Domain
+      description: Check Sending Domain
+      operationId: checkSendingDomain
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                owner_id:
+                  type: string
+                  description: "The unique identifier of the owner of the sending domain.\r\n"
+                token:
+                  type: string
+                  description: "The authentication token that authorizes the request to check the sending domain.\r\n"
+                domain:
+                  type: string
+                  description: "The sending domain that you want to check. \r\n"
+              required:
+                - owner_id
+                - token
+                - domain
+            examples:
+              Example 1:
+                value:
+                  owner_id: example id
+                  token: example token
+                  domain: abc.com
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  domain:
+                    type: string
+                    description: >-
+                      The domain name that was checked for sending domain
+                      capabilities.
+                  status:
+                    type: string
+                    description: 'The status of the API response, indicating success. '
+                  dkim:
+                    type: string
+                    description: >-
+                      An object providing information about DKIM (DomainKeys
+                      Identified Mail) validation.
+                  spf:
+                    type: string
+                    description: >-
+                      An object providing information about SPF (Sender Policy
+                      Framework) validation.
+                  valid_signing:
+                    type: string
+                    description: ' Indicates whether valid signing is present for the domain.'
+              examples:
+                Example 1:
+                  value:
+                    status: success
+                    domain: abc.com
+                    dkim:
+                      valid: 'Yes'
+                    spf:
+                      valid: 'No'
+                    valid_signing: 'No'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. In this case, it is a \"ValidationError\", indicating that there was a problem with the data provided in the request.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "An error message that provides specific details about the validation error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: ValidationError
+                    message: Domain name is required in order to check domain
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is an \"AuthenticationError\", which signifies that there was an issue with authentication or authorization.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A specific error message providing details about the unauthorized access error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: AuthenticationError
+                    message: Owner Id and Token MisMatch
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"Invalid Request\", indicating that the request made to the API is invalid.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message detailing the nature of the error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: Invalid Request
+                    message: Page Not Found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"GeneralError\", indicating a general or unspecified error on the server side.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message explaining the nature of the error.\r\n\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: GeneralError
+                    message: Unable to process your request
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+  /v1.0/settings/verifySendingDomain:
+    post:
+      tags:
+        - Email - Enterprise
+        - Sending Domain Calls
+      summary: Verify Sending Domain
+      description: Verify Sending Domain
+      operationId: verifySendingDomain
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                owner_id:
+                  type: string
+                  description: The unique identifier of the owner of the sending domain.
+                token:
+                  type: string
+                  description: "The authentication token that authorizes the request to verify the sending domain.\t  "
+                domain:
+                  type: string
+                  description: 'The sending domain that you want to verify. '
+                mailbox:
+                  type: string
+                  description: >-
+                    The user mailbox is where the system sends the verification
+                    messages or instructions during the domain verification
+                    process.
+              required:
+                - owner_id
+                - token
+                - domain
+                - mailbox
+            examples:
+              Example 1:
+                value:
+                  owner_id: example id
+                  token: example token
+                  domain: abc.com
+                  mailbox: john
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: 'The status of the API response, indicating success. '
+                  message:
+                    type: string
+                    description: "The response message, providing context on the status.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: success
+                    message: >-
+                      Verification instruction has been sent to '+ mailbox + @ +
+                      domain'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                    code:
+                      type: integer
+                      description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                    type:
+                      type: string
+                      description: "The type of error that occurred. In this case, it is a \"ValidationError\", indicating that there was a problem with the data provided in the request.\r\n\r\n"
+                    message:
+                      type: string
+                      description: "An error message that provides specific details about the validation error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    - status: error
+                      code: -1
+                      type: ValidationError
+                      message: Domain name is required in order to verify domain
+                    - status: error
+                      code: -1
+                      type: ValidationError
+                      message: Mailbox is required in order to verify domain
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is an \"AuthenticationError\", which signifies that there was an issue with authentication or authorization.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A specific error message providing details about the unauthorized access error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: AuthenticationError
+                    message: Owner Id and Token MisMatch
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"Invalid Request\", indicating that the request made to the API is invalid.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message detailing the nature of the error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: Invalid Request
+                    message: Page Not Found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                    code:
+                      type: integer
+                      description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                    type:
+                      type: string
+                      description: "The type of error that occurred. Here, it is specified as \"GeneralError\", indicating a general or unspecified error on the server side.\r\n\r\n"
+                    message:
+                      type: string
+                      description: "A descriptive error message explaining the nature of the error.\r\n\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    - status: error
+                      code: -1
+                      type: GeneralError
+                      message: Unable to process your request
+                    - status: error
+                      code: -1
+                      type: GeneralError
+                      message: Unable to send email.
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+  /v1.0/settings/listSendingDomain:
+    post:
+      tags:
+        - Email - Enterprise
+        - Sending Domain Calls
+      summary: List Sending Domain
+      description: List Sending Domain
+      operationId: listSendingDomain
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                owner_id:
+                  type: string
+                  description: The unique identifier of the owner of the sending domain.
+                token:
+                  type: string
+                  description: "The authentication token that authorizes the request to list all sending domains.\t  "
+              required:
+                - owner_id
+                - token
+            examples:
+              Example 1:
+                value:
+                  owner_id: '45303567'
+                  token: px1INmm0P0Ip75Wys3dW
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the API response, indicating success.\r\n\r\n"
+                  sending_domain_list:
+                    type: string
+                    description: List of all sending domains.
+              examples:
+                Example 1:
+                  value:
+                    status: success
+                    sending_domain_list: finalRes
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. In this case, it is a \"ValidationError\", indicating that there was a problem with the data provided in the request.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "An error message that provides specific details about the validation error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: ValidationError
+                    message: user_id required !!
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is an \"AuthenticationError\", which signifies that there was an issue with authentication or authorization.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A specific error message providing details about the unauthorized access error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: AuthenticationError
+                    message: Owner Id and Token MisMatch
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"Invalid Request\", indicating that the request made to the API is invalid.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message detailing the nature of the error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: Error
+                    code: -1
+                    type: Invalid Request
+                    message: Page Not Found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"GeneralError\", indicating a general or unspecified error on the server side.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message explaining the nature of the error.\r\n\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: GeneralError
+                    message: Unable to process your request
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+  /v1.0/settings/deleteSendingDomain:
+    post:
+      tags:
+        - Email - Enterprise
+        - Sending Domain Calls
+      summary: Delete Sending Domain
+      description: Delete Sending Domain
+      operationId: deleteSendingDomain
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                owner_id:
+                  type: string
+                  description: The unique identifier of the owner of the sending domain.
+                token:
+                  type: string
+                  description: "The authentication token that authorizes the request to delete the sending domain.\r\n"
+                domain:
+                  type: string
+                  description: >-
+                    The sending domain that you want to delete from the Email
+                    API. This domain will be removed from the list of sending
+                    domains associated with the specified owner_id.
+              required:
+                - owner_id
+                - token
+                - domain
+            examples:
+              Example 1:
+                value:
+                  owner_id: example id
+                  token: example token
+                  domain: abc.com
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the API response, indicating success.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "The response message, providing context on the status.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: success
+                    message: Sending Domain Deleted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. In this case, it is a \"ValidationError\", indicating that there was a problem with the data provided in the request.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "An error message that provides specific details about the validation error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: ValidationError
+                    message: domain name required !!
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is an \"AuthenticationError\", which signifies that there was an issue with authentication or authorization.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A specific error message providing details about the unauthorized access error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: AuthenticationError
+                    message: Owner Id and Token MisMatch
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"Invalid Request\", indicating that the request made to the API is invalid.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message detailing the nature of the error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: Error
+                    code: -1
+                    type: Invalid Request
+                    message: Page Not Found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"GeneralError\", indicating a general or unspecified error on the server side.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message explaining the nature of the error.\r\n\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: GeneralError
+                    message: Unable to process your request
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+  /v1.0/settings/addTrackingDomain:
+    post:
+      tags:
+        - Email - Enterprise
+        - Tracking Domains Calls
+      summary: Add a new Tracking Domains
+      description: Add a new Tracking Domains
+      operationId: addANewTrackingDomains
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                owner_id:
+                  type: string
+                  description: The unique identifier of the owner of the tracking domain.
+                token:
+                  type: string
+                  description: >-
+                    The authentication token that authorizes the request to
+                    track domain calls. 
+                domain:
+                  type: string
+                  description: >-
+                    The tracking domain that you want to use for tracking API
+                    calls related to email events. 
+              required:
+                - owner_id
+                - token
+                - domain
+            examples:
+              Example 1:
+                value:
+                  owner_id: example id
+                  token: example token
+                  domain: abc.com
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: >-
+                      The status of the error response, indicating that an error
+                      occurred. 
+                  message:
+                    type: string
+                    description: "The response message, providing context on the status.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: success
+                    message: Tracking Domain Added
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. In this case, it is a \"ValidationError\", indicating that there was a problem with the data provided in the request.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "An error message that provides specific details about the validation error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: ValidationError
+                    message: domain name required !!
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is an \"AuthenticationError\", which signifies that there was an issue with authentication or authorization.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A specific error message providing details about the unauthorized access error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: AuthenticationError
+                    message: Owner Id and Token MisMatch
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"Invalid Request\", indicating that the request made to the API is invalid.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message detailing the nature of the error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: Invalid Request
+                    message: Page Not Found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"GeneralError\", indicating a general or unspecified error on the server side.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message explaining the nature of the error.\r\n\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: GeneralError
+                    message: Unable to process your request
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+  /v1.0/settings/checkTrackingDomain:
+    post:
+      tags:
+        - Email - Enterprise
+        - Tracking Domains Calls
+      summary: Check Tracking Domain
+      description: Check Tracking Domain
+      operationId: checkTrackingDomain
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                owner_id:
+                  type: string
+                  description: >-
+                    The unique identifier of the owner or user performing the
+                    domain check action.
+                token:
+                  type: string
+                  description: >-
+                    An authentication token associated with the owner's account
+                    to authorize the domain verification.
+                domain:
+                  type: string
+                  description: The domain to be checked for tracking status.
+                  example: domain.com
+              required:
+                - owner_id
+                - token
+                - domain
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  domain:
+                    type: string
+                    description: >-
+                      The domain name that was checked for tracking
+                      capabilities.
+                  status:
+                    type: string
+                    description: The status of the API response, indicating success.
+                  valid_tracking:
+                    type: string
+                    description: 'Indicates whether tracking is valid for the domain. '
+                  cname:
+                    type: string
+                    description: >-
+                      Indicates the validity of the CNAME record for tracking on
+                      the domain. 
+              examples:
+                Example 1:
+                  value:
+                    domain: domain
+                    status: success
+                    valid_tracking: '(trackStatus) ? ''Yes'' : ''No'''
+                    cname: 'valid: (trackStatus) ? ''Yes'' : ''No'''
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. In this case, it is a \"ValidationError\", indicating that there was a problem with the data provided in the request.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "An error message that provides specific details about the validation error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: ValidationError
+                    message: Domain name is required in order to check domain
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: string
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is an \"AuthenticationError\", which signifies that there was an issue with authentication or authorization.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A specific error message providing details about the unauthorized access error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: '-1'
+                    type: AuthenticationError
+                    message: Owner Id and Token MisMatch
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"Invalid Request\", indicating that the request made to the API is invalid.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message detailing the nature of the error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: Invalid Request
+                    message: Page Not Found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"GeneralError\", indicating a general or unspecified error on the server side.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message explaining the nature of the error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: GeneralError
+                    message: Unable to process your request
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+  /v1.0/settings/listTrackingDomain:
+    post:
+      tags:
+        - Email - Enterprise
+        - Tracking Domains Calls
+      summary: List Tracking Domain
+      description: List Tracking Domain
+      operationId: listTrackingDomain
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                owner_id:
+                  type: string
+                  description: >-
+                    The unique identifier of the owner or user requesting the
+                    list of tracking domains.
+                token:
+                  type: string
+                  description: >-
+                    An authentication token associated with the owner's account
+                    to authorize the request for listing tracking domains.
+              required:
+                - owner_id
+                - token
+            examples:
+              Example 1:
+                value:
+                  owner_id: example id
+                  token: example token
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: The status of the API response, indicating success.
+                  smtp_list:
+                    type: string
+                    description: The list of all tracking domains.
+              examples:
+                Example 1:
+                  value:
+                    status: success
+                    smtp_list: finalRes
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. In this case, it is a \"ValidationError\", indicating that there was a problem with the data provided in the request.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "An error message that provides specific details about the validation error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: ValidationError
+                    message: domain name required !!
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: string
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is an \"AuthenticationError\", which signifies that there was an issue with authentication or authorization.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A specific error message providing details about the unauthorized access error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: '-1'
+                    type: AuthenticationError
+                    message: Owner Id and Token MisMatch
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"Invalid Request\", indicating that the request made to the API is invalid.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message detailing the nature of the error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: Invalid Request
+                    message: Page Not Found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"GeneralError\", indicating a general or unspecified error on the server side.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message explaining the nature of the error.\r\n\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: GeneralError
+                    message: Unable to process your request
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+  /v1.0/settings/deleteTrackingDomain:
+    post:
+      tags:
+        - Email - Enterprise
+        - Tracking Domains Calls
+      summary: Delete Tracking Domain
+      description: Delete Tracking Domain
+      operationId: deleteTrackingDomain
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                owner_id:
+                  type: string
+                  description: >-
+                    The unique identifier of the owner or user performing the
+                    domain deletion action.
+                token:
+                  type: string
+                  description: >-
+                    An authentication token associated with the owner's account
+                    to authorize the domain deletion.
+                domain:
+                  type: string
+                  description: >-
+                    The domain name that is to be deleted from the list of
+                    tracking domains.
+              required:
+                - owner_id
+                - token
+                - domain
+            examples:
+              Example 1:
+                value:
+                  owner_id: example id
+                  token: example token
+                  domain: abc.com
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: The status of the API response, indicating success.
+                  message:
+                    type: string
+                    description: >-
+                      A descriptive error message explaining the nature of the
+                      error. 
+              examples:
+                Example 1:
+                  value:
+                    status: success
+                    message: Tracking Domain Deleted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. In this case, it is a \"ValidationError\", indicating that there was a problem with the data provided in the request.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "An error message that provides specific details about the validation error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: ValidationError
+                    message: Domain name required !!
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: string
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is an \"AuthenticationError\", which signifies that there was an issue with authentication or authorization.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A specific error message providing details about the unauthorized access error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: '-1'
+                    type: AuthenticationError
+                    message: Owner Id and Token MisMatch
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"Invalid Request\", indicating that the request made to the API is invalid.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message detailing the nature of the error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: Invalid Request
+                    message: Page Not Found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred. In this example, it is set to \"error\".\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"GeneralError\", indicating a general or unspecified error on the server side.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message explaining the nature of the error.\r\n\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: GeneralError
+                    message: Unable to process your request
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+  /v1.0/settings/addWebhook:
+    post:
+      tags:
+        - Email - Enterprise
+        - Webhook Calls
+      summary: Add a new Webhook
+      description: Add a new Webhook
+      operationId: addANewWebhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                owner_id:
+                  type: string
+                  description: >-
+                    The unique identifier of the owner or user configuring the
+                    webhook.
+                token:
+                  type: string
+                  description: >-
+                    An authentication token or key associated with the owner's
+                    account to authorize the webhook configuration.
+                url:
+                  type: string
+                  description: The URL where webhook events will be sent.
+                event:
+                  type: string
+                  description: >-
+                    A comma-separated list of events that the webhook should
+                    listen to, such as
+                    "send,open,click,soft_bounce,hard_bounce,spam".
+                description:
+                  type: string
+                  description: >-
+                    A description providing information about the purpose of the
+                    URL or the webhook.
+                store_log:
+                  type: string
+                  description: Indicates whether logs for webhook events should be stored.
+              required:
+                - owner_id
+                - token
+                - url
+                - event
+            examples:
+              Example 1:
+                value:
+                  owner_id: example id
+                  token: example token
+                  url: example url
+                  event: send,open,click,soft_bounce,hard_bounce,spam
+                  description: description about url
+                  store_log: Enable
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the API response, indicating success.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "The response message, providing context on the status.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: success
+                    message: Webhook Added
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                    code:
+                      type: integer
+                      description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                    type:
+                      type: string
+                      description: "The type of error that occurred. In this case, it is a \"ValidationError\", indicating that there was a problem with the data provided in the request.\r\n\r\n"
+                    message:
+                      type: string
+                      description: "An error message that provides specific details about the validation error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    - status: error
+                      code: -1
+                      type: ValidationError
+                      message: url required !!
+                    - status: error
+                      code: -1
+                      type: ValidationError
+                      message: >-
+                        Please confirm that your url is responding with
+                        message:  + URL_VERIFY_STR 
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: >-
+                      The status of the error response, indicating that an error
+                      occurred.
+                  code:
+                    type: string
+                    description: >-
+                      An error code associated with the specific type of error.
+                      In this example, it is set to -1.
+                  type:
+                    type: string
+                    description: >-
+                      The type of error that occurred. Here, it is an
+                      "AuthenticationError", which signifies that there was an
+                      issue with authentication or authorization.
+                  message:
+                    type: string
+                    description: >-
+                      A specific error message providing details about the
+                      unauthorized access error.
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: '-1'
+                    type: AuthenticationError
+                    message: Owner Id and Token MisMatch
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: >-
+                      The status of the error response, indicating that an error
+                      occurred.
+                  code:
+                    type: integer
+                    description: >-
+                      An error code associated with the specific type of error.
+                      In this example, it is set to -1.
+                  type:
+                    type: string
+                    description: >-
+                      The type of error that occurred. Here, it is specified as
+                      "Invalid Request", indicating that the request made to the
+                      API is invalid.
+                  message:
+                    type: string
+                    description: >-
+                      A descriptive error message detailing the nature of the
+                      error.
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: Invalid Request
+                    message: Page Not Found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"GeneralError\", indicating a general or unspecified error on the server side.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message explaining the nature of the error.\r\n\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: GeneralError
+                    message: Unable to process your request
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+  /v1.0/settings/editWebhook:
+    post:
+      tags:
+        - Email - Enterprise
+        - Webhook Calls
+      summary: Edit Webhook
+      description: Edit Webhook
+      operationId: editWebhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                owner_id:
+                  type: string
+                  description: >-
+                    The unique identifier of the owner or user editing the
+                    webhook.
+                token:
+                  type: string
+                  description: >-
+                    An authentication token or key associated with the owner's
+                    account to authorize the webhook modification.
+                webhook_id:
+                  type: string
+                  description: >-
+                    The unique identifier of the webhook that needs to be
+                    edited.
+              required:
+                - owner_id
+                - token
+                - webhook_id
+            examples:
+              Example 1:
+                value:
+                  owner_id: example id
+                  token: example token
+                  webhook_id: '424353445757557577457'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the API request indicates whether the webhook edition was successful.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "The response message, providing context on the status.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: success
+                    message: Webhook Edited
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                    code:
+                      type: integer
+                      description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                    type:
+                      type: string
+                      description: "The type of error that occurred. In this case, it is a \"ValidationError\", indicating that there was a problem with the data provided in the request.\r\n\r\n"
+                    message:
+                      type: string
+                      description: "An error message that provides specific details about the validation error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    - status: error
+                      code: -1
+                      type: ValidationError
+                      message: Valid webhook_id required !!
+                    - status: error
+                      code: -1
+                      type: ValidationError
+                      message: Invalid Webhook Id
+                    - status: error
+                      code: -1
+                      type: ValidationError
+                      message: >-
+                        Invalid store_log value ,value must be either Enable or
+                        Disable
+                    - status: error
+                      code: -1
+                      type: ValidationError
+                      message: No update field given !!
+                    - status: error
+                      code: -1
+                      type: ValidationError
+                      message: >-
+                        Please confirm that your url is responding with message:
+                        + 'URL_VERIFY_STR'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: >-
+                      The status of the error response, indicating that an error
+                      occurred.
+                  code:
+                    type: string
+                    description: >-
+                      An error code associated with the specific type of error.
+                      In this example, it is set to -1.
+                  type:
+                    type: string
+                    description: >-
+                      The type of error that occurred. Here, it is an
+                      "AuthenticationError", which signifies that there was an
+                      issue with authentication or authorization.
+                  message:
+                    type: string
+                    description: "A specific error message providing details about the unauthorized access error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: '-1'
+                    type: AuthenticationError
+                    message: Owner Id and Token MisMatch
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: >-
+                      The status of the error response, indicating that an error
+                      occurred.
+                  code:
+                    type: integer
+                    description: >-
+                      An error code associated with the specific type of error.
+                      In this example, it is set to -1.
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"Invalid Request\", indicating that the request made to the API is invalid.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message detailing the nature of the error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: Invalid Request
+                    message: Page Not Found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: >-
+                      The status of the error response, indicating that an error
+                      occurred. 
+                  code:
+                    type: integer
+                    description: 'An error code associated with the specific type of error. '
+                  type:
+                    type: string
+                    description: >-
+                      The type of error that occurred. Here, it is specified as
+                      "GeneralError", indicating a general or unspecified error
+                      on the server side.
+                  message:
+                    type: string
+                    description: "A descriptive error message explaining the nature of the error.\r\n\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: GeneralError
+                    message: Unable to process your request
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+  /v1.0/settings/keyResetWebhook:
+    post:
+      tags:
+        - Email - Enterprise
+        - Webhook Calls
+      summary: Key Reset for Webhook
+      description: Key Reset for Webhook
+      operationId: keyResetForWebhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                owner_id:
+                  type: string
+                  description: >-
+                    The unique identifier of the owner or user requesting the
+                    key reset for the webhook.
+                token:
+                  type: string
+                  description: >-
+                    An authentication token or key associated with the owner's
+                    account to authorize the webhook key reset.
+                webhook_id:
+                  type: string
+                  description: >-
+                    The unique identifier of the webhook for which the key needs
+                    to be reset.
+            examples:
+              Example 1:
+                value:
+                  owner_id: example id
+                  token: example token
+                  webhook_id: '424353445757557577457'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: >-
+                      The status of the API request indicates whether the
+                      webhook key reset was successful.
+                  message:
+                    type: string
+                    description: >-
+                      A descriptive message summarizing the outcome of the API
+                      request, providing context on the status.
+                  webhook_id:
+                    type: string
+                    description: The identifier of the webhook for which the key was reset.
+                  key:
+                    type: string
+                    description: The newly generated key for the webhook.
+              examples:
+                Example 1:
+                  value:
+                    status: success
+                    message: Webhook key reset
+                    webhook_id: webhook_id
+                    key: key
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: 'The type of error that occurred. '
+                  message:
+                    type: string
+                    description: "An error message that provides specific details about the validation error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: ValidationError
+                    message: Valid webhook_id required !!
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: string
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is an \"AuthenticationError\", which signifies that there was an issue with authentication or authorization.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A specific error message providing details about the unauthorized access error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: '-1'
+                    type: AuthenticationError
+                    message: Owner Id and Token MisMatch
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"Invalid Request\", indicating that the request made to the API is invalid.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message detailing the nature of the error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: Invalid Request
+                    message: Page Not Found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error.\r\n\r\n"
+                  type:
+                    type: string
+                    description: 'The type of error that occurred. '
+                  message:
+                    type: string
+                    description: "A descriptive error message explaining the nature of the error.\r\n\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: GeneralError
+                    message: Unable to process your request
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+  /v1.0/settings/listWebhook:
+    post:
+      tags:
+        - Email - Enterprise
+        - Webhook Calls
+      summary: List Webhooks
+      description: List Webhooks
+      operationId: listWebhooks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                owner_id:
+                  type: string
+                  description: >-
+                    The identifier of the owner or user account that is
+                    associated with the webhooks you want to list.
+                token:
+                  type: string
+                  description: "An authentication token or key associated with the owner's account to authorize the webhook configuration.\r\n\r\n"
+              required:
+                - owner_id
+                - token
+            examples:
+              Example 1:
+                value:
+                  owner_id: example id
+                  token: example token
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: >-
+                      The status of the API request indicates whether the
+                      webhook listing was successful.
+                  webhook_list:
+                    type: string
+                    description: The list of all webhooks.
+              examples:
+                Example 1:
+                  value:
+                    status: success
+                    webhook_list: finalRes
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "An error message that provides specific details about the validation error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: ValidationError
+                    message: user_id required !!
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: string
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is an \"AuthenticationError\", which signifies that there was an issue with authentication or authorization.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A specific error message providing details about the unauthorized access error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: '-1'
+                    type: AuthenticationError
+                    message: Owner Id and Token MisMatch
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"Invalid Request\", indicating that the request made to the API is invalid.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message detailing the nature of the error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: Invalid Request
+                    message: Page Not Found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message explaining the nature of the error.\r\n\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: GeneralError
+                    message: Unable to process your request
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+  /v1.0/settings/deleteWebhook:
+    post:
+      tags:
+        - Email - Enterprise
+        - Webhook Calls
+      summary: Delete Webhook
+      description: Delete Webhook
+      operationId: deleteWebhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                owner_id:
+                  type: string
+                  description: >-
+                    The unique identifier of the owner or user account
+                    associated with the webhook you want to delete.
+                token:
+                  type: string
+                  description: >-
+                    An authentication token or API key that verifies the
+                    identity of the requester and provides access to perform the
+                    delete operation.
+                webhook_id:
+                  type: string
+                  description: >-
+                    The unique identifier of the webhook that you want to
+                    delete.
+              required:
+                - owner_id
+                - token
+                - webhook_id
+            examples:
+              Example 1:
+                value:
+                  owner_id: example id
+                  token: example token
+                  webhook_id: '424353445757557577457'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the API request indicates whether the webhook deletion was successful.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "The response message, providing context on the status.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: success
+                    message: Webhook Deleted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. In this case, it is a \"ValidationError\", indicating that there was a problem with the data provided in the request.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "An error message that provides specific details about the validation error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: ValidationError
+                    message: Valid Webhook id required !!
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: >-
+                      The status of the error response, indicating that an error
+                      occurred.
+                  code:
+                    type: string
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is an \"AuthenticationError\", which signifies that there was an issue with authentication or authorization.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A specific error message providing details about the unauthorized access error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: '-1'
+                    type: AuthenticationError
+                    message: Owner Id and Token MisMatch
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: >-
+                      The status of the error response, indicating that an error
+                      occurred.
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"Invalid Request\", indicating that the request made to the API is invalid.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message detailing the nature of the error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: Invalid Request
+                    message: Page Not Found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: >-
+                      The status of the error response, indicating that an error
+                      occurred.
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"GeneralError\", indicating a general or unspecified error on the server side.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message explaining the nature of the error.\r\n\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: GeneralError
+                    message: Unable to process your request
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+  /v1.0/settings/getWebhookInfo:
+    post:
+      tags:
+        - Email - Enterprise
+        - Webhook Calls
+      summary: Get info of any webhook
+      description: Get info of any webhook
+      operationId: getInfoOfAnyWebhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                owner_id:
+                  type: string
+                  description: >-
+                    The unique identifier of the owner or user account
+                    associated with the webhook for which you want to retrieve
+                    information.
+                token:
+                  type: string
+                  description: >-
+                    An authentication token or API key that confirms the
+                    identity of the requester and authorizes access to retrieve
+                    webhook information.
+                webhook_id:
+                  type: string
+                  description: >-
+                    The unique identifier of the webhook you want to get
+                    information about. 
+            examples:
+              Example 1:
+                value:
+                  owner_id: example id
+                  token: example token
+                  webhook_id: '424353445757557577457'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: >-
+                      The status of the API response, indicating whether the
+                      operation was successful.
+                  webhook_data:
+                    type: object
+                    description: >-
+                      An object containing detailed information about the
+                      webhook.
+                    properties:
+                      webhook_id:
+                        type: string
+                        description: The unique identifier of the webhook.
+                      url:
+                        type: string
+                        description: The URL where the webhook sends data.
+                      event:
+                        type: string
+                        description: The event for which the webhook is triggered.
+                      description:
+                        type: string
+                        description: A description of the webhook.
+                      store_log:
+                        type: string
+                        description: Indicates whether logs are being stored.
+                      key:
+                        type: string
+                        description: The authentication key for the webhook.
+                      create_date:
+                        type: integer
+                        description: The timestamp when the webhook was created.
+                      last_success:
+                        type: integer
+                        description: The timestamp of the last successful webhook call.
+                      total_event:
+                        type: integer
+                        description: The total number of events processed by the webhook.
+              examples:
+                Example 1:
+                  value:
+                    status: success
+                    webhook_data:
+                      webhook_id: '405602261459333060372'
+                      url: http://xyz.com/webhook3.php
+                      event: open
+                      description: this is desctiptyioj......
+                      store_log: Enable
+                      key: aVLnPysvkKUU95AFrb47Zr
+                      create_date: 1459333060
+                      last_success: 1459366666
+                      total_event: 23
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. In this case, it is a \"ValidationError\", indicating that there was a problem with the data provided in the request.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "An error message that provides specific details about the validation error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: ValidationError
+                    message: Valid Webhook id required !!
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: string
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is an \"AuthenticationError\", which signifies that there was an issue with authentication or authorization.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A specific error message providing details about the unauthorized access error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: '-1'
+                    type: AuthenticationError
+                    message: Owner Id and Token MisMatch
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"Invalid Request\", indicating that the request made to the API is invalid.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message detailing the nature of the error.\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: Invalid Request
+                    message: Page Not Found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: "The status of the error response, indicating that an error occurred.\r\n\r\n"
+                  code:
+                    type: integer
+                    description: "An error code associated with the specific type of error. In this example, it is set to -1.\r\n\r\n"
+                  type:
+                    type: string
+                    description: "The type of error that occurred. Here, it is specified as \"GeneralError\", indicating a general or unspecified error on the server side.\r\n\r\n"
+                  message:
+                    type: string
+                    description: "A descriptive error message explaining the nature of the error.\r\n\r\n\r\n"
+              examples:
+                Example 1:
+                  value:
+                    status: error
+                    code: -1
+                    type: GeneralError
+                    message: Unable to process your request
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+  /v1.0/messages/sendMail:
+    post:
+      tags:
+        - Email - Enterprise
+        - Messages Calls
+      summary: Send a new transactional message through SendClean
+      description: Send a new transactional message through SendClean
+      operationId: sendANewTransactionalMessageThroughSendclean
+      parameters:
+        - name: Reply-To
+          in: header
+          required: false
+          style: simple
+          explode: false
+          schema:
+            type: string
+            example: message.reply@example.com
+        - name: X-Unique-Id
+          in: header
+          required: false
+          style: simple
+          explode: false
+          schema:
+            type: string
+            example: id
+      requestBody:
+        content:
+          application/json:
+            examples:
+              default:
+                value:
+                  message:
+                    attachments:
+                      - content: ZXhhbXBsZSBmaWxl
+                        name: myfile.txt
+                        type: text/plain
+                    from_email: message.from_email@example.com
+                    from_name: Example Name
+                    html: Example HTML content
+                    images:
+                      - content: ZXhhbXBsZSBmaWxl
+                        name: IMAGECID
+                        type: image/png
+                    subject: example subject
+                    text: Example text content
+                    to:
+                      - email: recipient.email@example.com
+                        name: Recipient Name
+                        type: to
+                  owner_id: example id
+                  smtp_user_name: smtp12345
+                  token: example token
+      responses:
+        '200':
+          description: ''
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+  /v1.0/messages/sendTemplate:
+    post:
+      tags:
+        - Email - Enterprise
+        - Messages Calls
+      summary: Send a new transactional message using templates
+      description: Send a new transactional message using templates
+      operationId: sendANewTransactionalMessageUsingTemplates
+      parameters:
+        - name: Reply-To
+          in: header
+          required: false
+          style: simple
+          explode: false
+          schema:
+            type: string
+            example: message.reply@example.com
+        - name: X-Unique-Id
+          in: header
+          required: false
+          style: simple
+          explode: false
+          schema:
+            type: string
+            example: id
+      requestBody:
+        content:
+          application/json:
+            examples:
+              default:
+                value:
+                  message:
+                    attachments:
+                      - content: ZXhhbXBsZSBmaWxl
+                        name: myfile.txt
+                        type: text/plain
+                    dynamic_value:
+                      Email: info@example.com
+                      NAME: xyz
+                    from_email: message.from_email@example.com
+                    from_name: Example Name
+                    images:
+                      - content: ZXhhbXBsZSBmaWxl
+                        name: IMAGECID
+                        type: image/png
+                    subject: example subject
+                    template_id: Template Id
+                    to:
+                      - email: recipient.email@example.com
+                        name: Recipient Name
+                        type: to
+                  owner_id: example id
+                  smtp_user_name: smtp12345
+                  token: example token
+      responses:
+        '200':
+          description: ''
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+  /v1.0/messages/sendTemplateHTTPGet:
+    post:
+      tags:
+        - Email - Enterprise
+        - Messages Calls
+      summary: Send a new transactional message using templates (HTTP GET method)
+      description: Send a new transactional message using templates (HTTP GET method)
+      operationId: sendANewTransactionalMessageUsingTemplatesHttpGetMethod
+      parameters:
+        - name: owner_id
+          in: query
+          description: A valid SendClean account Id
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: owner_id
+        - name: token
+          in: query
+          description: A valid token
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: token
+        - name: smtp_user_name
+          in: query
+          description: A valid smtp user name
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: smtp12345
+        - name: template_id
+          in: query
+          description: A valid previously created template id
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: template_id
+        - name: subject
+          in: query
+          description: URL encoded subject
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: hello
+        - name: from_email
+          in: query
+          description: URL encoded from email
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: info%40example.com
+        - name: to
+          in: query
+          description: URL encoded to email
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: xyz%40example.com
+        - name: dynamic_value%5BNAME%5D
+          in: query
+          description: URL encoded string
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: xyz
+        - name: dynamic_value%5BEmail%5D
+          in: query
+          description: URL encoded string
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: xyz%40example.com
+      responses:
+        '200':
+          description: ''
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+  /v1.0/messages/getMessageInfo:
+    post:
+      tags:
+        - Email - Enterprise
+        - Messages Calls
+      summary: Get list of messages of specific x-unique-id
+      description: Get list of messages of specific x-unique-id
+      operationId: getListOfMessagesOfSpecificXUniqueId
+      requestBody:
+        content:
+          application/json:
+            examples:
+              default:
+                value:
+                  owner_id: example id
+                  skip_page: 0
+                  token: example token
+                  x_unique_id: test
+      responses:
+        '200':
+          description: ''
+      security:
+        - jwt: []
+      servers:
+        - url: https://api.us1-mta1.sendclean.net
+tags:
+  - name: Email - Enterprise
+  - name: SMTP User Call
+  - name: Sending Domain Calls
+  - name: Tracking Domains Calls
+  - name: Webhook Calls
+  - name: Messages Calls
+  - name: Account Calls
+components:
+  securitySchemes:
+    jwt:
+      type: apiKey
+      name: Authorization
+      in: header
