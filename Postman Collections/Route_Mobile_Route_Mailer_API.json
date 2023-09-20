@@ -1,187 +1,171 @@
 {
-  "info": {
-    "_postman_id": "5055a478-753c-4c03-a3bb-e73b02c6c414",
-    "name": "Route Mobile Route Mailer API",
-    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "Single email to single recipient ",
-      "_postman_id": "07ebbe26-88e5-4aee-ba03-9c5da3d783ff",
-      "protocolProfileBehavior": {
-        "disabledSystemHeaders": {},
-        "disableBodyPruning": true
-      },
-      "request": {
-        "auth": {
-          "type": "basic",
-          "basic": {
-            "password": "6b82228348935f18eeb0a734312bcadb",
-            "username": "_usercc36d266f9827686"
-          }
-        },
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n\"recipients\": [{\r\n\"to\": [{\r\n\"emailid\": \"your email address\"\r\n}],\r\n\"cc\": [],\r\n\"bcc\": []\r\n}],\r\n\"from\": {\r\n\"emailid\": \"your brand email address\",\r\n\"name\": \"Test\"\r\n},\r\n\"subject\": \"Welcome\",\r\n\"content\": [{\r\n\"type\": \"text/html\",\r\n\"value\": \"Your Message to customer.\"\r\n}],\r\n\"mailtype\": \"trans\"\r\n}",
-          "options": {
-            "raw": {}
-          }
-        },
-        "url": "https://sapi.trackcampaigns.com/v1/api/sendmail",
-        "description": "The following API payload to send a single email to a single recipient "
-      },
-      "response": []
-    },
-    {
-      "name": "Send single email with a CC",
-      "_postman_id": "bfa41b11-d38c-4493-bda9-c9cf7b83f416",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n\"recipients\":[\r\n{\r\n\"to\":[\r\n{\r\n\"emailid\": \"your@example.com\", \"name\":\"your\"\r\n}\r\n],\r\n\"cc\":[\r\n{\r\n\"emailid\":\"your@example.com\",\r\n}\r\n],\r\n\"personalization_data\": { \":salutation\":\":gender\",\r\n\":name\": \"your name\", \":your_details\": \":program\", \":date\": \"Jan1\"\r\n}\r\n}\r\n],\r\n\"subject\": \"Your subject line\", \"from\":{\r\n\"emailid\": \"from@example.com\", \"name\":\"FromName\"\r\n},\r\n\"mailtype\": \"PROMO\", \"content\":[\r\n{\r\n\"type\":\"text/html\",\r\n\"value\": \"refer to SampleHTML\"\r\n}\r\n],\r\n\"blocks\":{\r\n\":male\": \"Mr.:name\",\r\n\":female\": \"Ms.:name\",\r\n\":neutral\":\":name\",\r\n\":webinar\": \"Upgrade your skills on :date\"\r\n},\r\n\"custom_args\":{\r\n\"segment_name\": \"Webinar\", \"CampaignId\":\"XXXX\"\r\n},\r\n\"category\": [ \"Newsletter\", \"XXXX\"\r\n]\r\n}\r\n",
-          "options": {
-            "raw": {}
-          }
-        },
-        "url": "https://sapi.trackcampaigns.com/v1/api/sendmail"
-      },
-      "response": []
-    },
-    {
-      "name": "Send a single email to CC and BCC",
-      "_postman_id": "34b38edf-31fe-4165-923e-e5493b5f6c96",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n\"recipients\":[\r\n{\r\n\"to\":[\r\n{\r\n\"emailid\": \"john@example.com\", \"name\":\"john\"\r\n}\r\n],\r\n\"cc\":[\r\n{\r\n\"emailid\":\"jane@example.com\",\r\n}\r\n],\r\n\"bcc\":[\r\n{\r\n\"emailid\": \"sam@example.com\", \"name\": \"sammohan\"\r\n}\r\n],\r\n\"personalization_data\": { \":salutation\":\":gender\",\r\n\":name\": \"Jony\", \":webinar_details\": \":webinar\", \":date\": \"Jan1\"\r\n}\r\n}\r\n],\r\n\"subject\": \"Your subject line\", \"mailtype\":\"PROMO\",\r\n\"from\":{\r\n\"emailid\": \"from@example.com\", \"name\":\"FromName\"\r\n},\r\n\"content\":[\r\n{\r\n\"type\":\"text/html\",\r\n\"value\": \"your message to customerL\"\r\n}\r\n],\r\n\"blocks\":{\r\n\":male\": \"Mr.:name\",\r\n\":female\": \"Ms.:name\",\r\n\":neutral\":\":name\",\r\n\":webinar1\": \"Upgrade your skills on :date\"\r\n},\r\n\"custom_args\":{\r\n\"segment_name\": \"Webinar\", \"CampaignId\":\"XXXX\"\r\n},\r\n\"category\": [ \"Newsletter\", \"Delhi\"\r\n]\r\n}\r\n",
-          "options": {
-            "raw": {}
-          }
-        },
-        "url": "https://sapi.trackcampaigns.com/v1/api/sendmail"
-      },
-      "response": []
-    },
-    {
-      "name": "Send email to multiple recipient ",
-      "_postman_id": "6cb5bbcf-d71c-43ae-9504-07034958e957",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n\"recipients\":[\r\n{\r\n\"to\":[\r\n{\r\n\"emailid\": \"john@example.com\", \"name\":\"john\"\r\n},\r\n{\r\n\"emailid\":\"jane@example.com\",\r\n},\r\n{\r\n\"emailid\":\"sam@example.com\",\r\n}\r\n],\r\n\"personalization_data\": { \":salutation\":\":male\",\r\n\":name\": \"Jony\", \":webinar_details\": \":webinar1\", \":date\": \"Jan1\"\r\n}\r\n}\r\n],\r\n\"subject\": \"Your Subject Line\", \"mailtype\":\"PROMO\",\r\n\"from\":{\r\n\"emailid\": \"from@example.com\", \"name\":\"FromName\"\r\n},\r\n\"content\":[\r\n{\r\n\"type\":\"text/html\",\r\n\"value\": \"refer to SampleHTML\"\r\n}\r\n],\r\n\"blocks\":{\r\n\":male\": \"Mr.:name\",\r\n\":female\": \"Ms.:name\",\r\n\":neutral\":\":name\",\r\n\":webinar1\": \"Upgrade your PMskills on :date\"\r\n},\r\n\"custom_args\":{\r\n\"segment_name\": \"Webinar\", \"CampaignId\":\"xxxx\"\r\n},\r\n\"category\": [ \"Newsletter\", \"xxxx\"\r\n]\r\n}\r\n",
-          "options": {
-            "raw": {}
-          }
-        },
-        "url": "https://sapi.trackcampaigns.com/v1/api/sendmail"
-      },
-      "response": []
-    },
-    {
-      "name": "Send mail to multiple CCs/ BCCs",
-      "_postman_id": "6300db4a-afc0-4e92-9ddd-7d25472d1692",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n\"recipients\":[\r\n{\r\n\"to\":[\r\n{\r\n\"emailid\": \"john@example.com\", \"name\":\"john\"\r\n}\r\n],\r\n\"cc\":[\r\n{\r\n\"emailid\":\"jane@example.com\"\r\n},\r\n{\r\n\"emailid\": \"joy@example.com\", \"name\":\"Joy\"\r\n}\r\n],\r\n\"bcc\":[\r\n{\r\n\"emailid\": \"sam@example.com\", \"name\": \"sammohan\"\r\n},\r\n{\r\n\"emailid\": \"steve@example.com\", \"name\": \"SteveWaugh\"\r\n}\r\n],\r\n\"personalization_data\": { \":salutation\":\":male\",\r\n\":name\": \"Jony\", \":webinar_details\": \":webinar1\", \":date\": \"Jan1\"\r\n}\r\n}\r\n],\r\n\"subject\": \"Your Subject Line\", \"from\":{\r\n\"emailid\": \"from@example.com\", \"name\":\"FromName\"\r\n},\r\n\"mailtype\": \"PROMO\", \"content\":[\r\n{\r\n\"type\":\"text/html\",\r\n\"value\": \"refer to yourHTML\"\r\n}\r\n],\r\n\"blocks\":{\r\n\":male\": \"Mr.:name\",\r\n\":female\": \"Ms.:name\",\r\n\":neutral\":\":name\",\r\n\":webinar1\": \"Upgrade your skills:date\"\r\n},\r\n\"custom_args\":{\r\n\"segment_name\": \"Webinar\", \"CampaignId\":\"xxxx\"\r\n},\r\n\"category\": [ \"Newsletter\", \"xxxxx\"\r\n]\r\n}\r\n",
-          "options": {
-            "raw": {}
-          }
-        },
-        "url": "https://sapi.trackcampaigns.com/v1/api/sendmail"
-      },
-      "response": []
-    },
-    {
-      "name": "Send two different email to two different groups of recipients",
-      "_postman_id": "198c56da-cc87-4687-ab0b-75506957113d",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n\"recipients\":[\r\n{\r\n\"to\":[\r\n{\r\n\"emailid\": \"your email address\", \"name\":\"your name\"\r\n}\r\n],\r\n\"personalization_data\": { \":salutation\":\":gender\",\r\n\":name\": \"gender\", \":webinar_details\": \":webinar1\", \":date\": \"Jan1\"\r\n}\r\n},\r\n{\r\n\"to\":[\r\n{\r\n\"emailid\": \"your email address\", \"name\":\"your name\"\r\n}\r\n],\r\n\"personalization_data\": { \":salutation\":\":gender\",\r\n\":name\": \"Jane\", \":webinar_details\": \":webinar1\", \":date\": \"Jan1\"\r\n}\r\n}\r\n],\r\n\"subject\": \"Your subject line\", \"from\":{\r\n\"emailid\": \"from@example.com\", \"name\":\"FromName\"\r\n},\r\n\"mailtype\": \"PROMO\", \"content\":[\r\n{\r\n\"type\":\"text/html\",\r\n\"value\": \"refer to SampleHTML\"\r\n}\r\n],\r\n\"blocks\":{\r\n\":male\": \"Mr.:name\",\r\n\":female\": \"Ms.:name\",\r\n\":neutral\":\":name\",\r\n\":webinar1\": \"Upgrade your skills on :date\"\r\n},\r\n\"custom_args\":{\r\n\"segment_name\": \"Webinar\", \"CampaignId\":\"11121\"\r\n},\r\n\"category\": [ \"Newsletter\", \"city\"\r\n]\r\n} \r\n",
-          "options": {
-            "raw": {}
-          }
-        },
-        "url": "https://sapi.trackcampaigns.com/v1/api/sendmail"
-      },
-      "response": []
-    },
-    {
-      "name": "Send email using Templates",
-      "_postman_id": "e6f6082c-09bb-4f99-badf-c2925ab646f8",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n\"recipients\":[\r\n{\r\n\"to\":[\r\n{\r\n\"emailid\": \"Your email address\", \"name\":\"john\"\r\n}\r\n],\r\n\"personalization_data\": { \":salutation\":\":gender\",\r\n\":name\": \"Jony\", \":webinar_details\": \":webinar1\", \":date\": \"Jan1\"\r\n}\r\n}\r\n],\r\n\"from\":{\r\n\"emailid\": \"from@example.com\", \"name\":\"FromName\"\r\n},\r\n\"subject\": \"Your Subject Line\", \"mailtype\":\"PROMO\",\r\n\"content\":[\r\n{\r\n\"template_id\":\"d911f467aae5c4e15b8430a1819e1d3f\"\r\n}\r\n],\r\n\"blocks\":{\r\n\":male\": \"Mr.:name\",\r\n\":female\": \"Ms.:name\",\r\n\":neutral\":\":name\",\r\n\":webinar1\": \"Upgrade your skills on :date\"\r\n},\r\n\"custom_args\":{\r\n\"segment_name\": \"November Webinar\", \"CampaignId\":\"11121\"\r\n},\r\n\"category\": [ \"Newsletter\", \"City\"\r\n]\r\n}\r\n",
-          "options": {
-            "raw": {}
-          }
-        },
-        "url": "https://sapi.trackcampaigns.com/v1/api/sendmail"
-      },
-      "response": []
-    }
-  ],
-  "auth": {
-    "type": "basic",
-    "basic": {
-      "password": "6b82228348935f18eeb0a734312bcadb",
-      "username": "_usercc36d266f9827686"
-    }
-  },
-  "event": [
-    {
-      "listen": "prerequest",
-      "script": {
-        "id": "1a8add02-bf6f-43dd-b70f-fe7db8089b97",
-        "type": "text/javascript",
-        "exec": [
-          ""
-        ]
-      }
-    },
-    {
-      "listen": "test",
-      "script": {
-        "id": "66288ff6-8484-4a87-ae85-8768a2e7b519",
-        "type": "text/javascript",
-        "exec": [
-          ""
-        ]
-      }
-    }
-  ]
+	"info": {
+		"_postman_id": "5055a478-753c-4c03-a3bb-e73b02c6c414",
+		"name": "Route Mobile Route Mailer API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "New Folder",
+			"item": [],
+			"id": "9c578566-420d-4d53-b930-71095f61697f"
+		},
+		{
+			"name": "Single email to single recipient ",
+			"id": "07ebbe26-88e5-4aee-ba03-9c5da3d783ff",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {},
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "6b82228348935f18eeb0a734312bcadb",
+						"username": "_usercc36d266f9827686"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"recipients\": [{\r\n\"to\": [{\r\n\"emailid\": \"your email address\"\r\n}],\r\n\"cc\": [],\r\n\"bcc\": []\r\n}],\r\n\"from\": {\r\n\"emailid\": \"your brand email address\",\r\n\"name\": \"Test\"\r\n},\r\n\"subject\": \"Welcome\",\r\n\"content\": [{\r\n\"type\": \"text/html\",\r\n\"value\": \"Your Message to customer.\"\r\n}],\r\n\"mailtype\": \"trans\"\r\n}"
+				},
+				"url": "https://sapi.trackcampaigns.com/v1/api/sendmail",
+				"description": "The following API payload to send a single email to a single recipient "
+			},
+			"response": []
+		},
+		{
+			"name": "Send single email with a CC",
+			"id": "bfa41b11-d38c-4493-bda9-c9cf7b83f416",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"recipients\":[\r\n{\r\n\"to\":[\r\n{\r\n\"emailid\": \"your@example.com\", \"name\":\"your\"\r\n}\r\n],\r\n\"cc\":[\r\n{\r\n\"emailid\":\"your@example.com\",\r\n}\r\n],\r\n\"personalization_data\": { \":salutation\":\":gender\",\r\n\":name\": \"your name\", \":your_details\": \":program\", \":date\": \"Jan1\"\r\n}\r\n}\r\n],\r\n\"subject\": \"Your subject line\", \"from\":{\r\n\"emailid\": \"from@example.com\", \"name\":\"FromName\"\r\n},\r\n\"mailtype\": \"PROMO\", \"content\":[\r\n{\r\n\"type\":\"text/html\",\r\n\"value\": \"refer to SampleHTML\"\r\n}\r\n],\r\n\"blocks\":{\r\n\":male\": \"Mr.:name\",\r\n\":female\": \"Ms.:name\",\r\n\":neutral\":\":name\",\r\n\":webinar\": \"Upgrade your skills on :date\"\r\n},\r\n\"custom_args\":{\r\n\"segment_name\": \"Webinar\", \"CampaignId\":\"XXXX\"\r\n},\r\n\"category\": [ \"Newsletter\", \"XXXX\"\r\n]\r\n}\r\n"
+				},
+				"url": "https://sapi.trackcampaigns.com/v1/api/sendmail"
+			},
+			"response": []
+		},
+		{
+			"name": "Send a single email to CC and BCC",
+			"id": "34b38edf-31fe-4165-923e-e5493b5f6c96",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"recipients\":[\r\n{\r\n\"to\":[\r\n{\r\n\"emailid\": \"john@example.com\", \"name\":\"john\"\r\n}\r\n],\r\n\"cc\":[\r\n{\r\n\"emailid\":\"jane@example.com\",\r\n}\r\n],\r\n\"bcc\":[\r\n{\r\n\"emailid\": \"sam@example.com\", \"name\": \"sammohan\"\r\n}\r\n],\r\n\"personalization_data\": { \":salutation\":\":gender\",\r\n\":name\": \"Jony\", \":webinar_details\": \":webinar\", \":date\": \"Jan1\"\r\n}\r\n}\r\n],\r\n\"subject\": \"Your subject line\", \"mailtype\":\"PROMO\",\r\n\"from\":{\r\n\"emailid\": \"from@example.com\", \"name\":\"FromName\"\r\n},\r\n\"content\":[\r\n{\r\n\"type\":\"text/html\",\r\n\"value\": \"your message to customerL\"\r\n}\r\n],\r\n\"blocks\":{\r\n\":male\": \"Mr.:name\",\r\n\":female\": \"Ms.:name\",\r\n\":neutral\":\":name\",\r\n\":webinar1\": \"Upgrade your skills on :date\"\r\n},\r\n\"custom_args\":{\r\n\"segment_name\": \"Webinar\", \"CampaignId\":\"XXXX\"\r\n},\r\n\"category\": [ \"Newsletter\", \"Delhi\"\r\n]\r\n}\r\n"
+				},
+				"url": "https://sapi.trackcampaigns.com/v1/api/sendmail"
+			},
+			"response": []
+		},
+		{
+			"name": "Send email to multiple recipient ",
+			"id": "6cb5bbcf-d71c-43ae-9504-07034958e957",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"recipients\":[\r\n{\r\n\"to\":[\r\n{\r\n\"emailid\": \"john@example.com\", \"name\":\"john\"\r\n},\r\n{\r\n\"emailid\":\"jane@example.com\",\r\n},\r\n{\r\n\"emailid\":\"sam@example.com\",\r\n}\r\n],\r\n\"personalization_data\": { \":salutation\":\":male\",\r\n\":name\": \"Jony\", \":webinar_details\": \":webinar1\", \":date\": \"Jan1\"\r\n}\r\n}\r\n],\r\n\"subject\": \"Your Subject Line\", \"mailtype\":\"PROMO\",\r\n\"from\":{\r\n\"emailid\": \"from@example.com\", \"name\":\"FromName\"\r\n},\r\n\"content\":[\r\n{\r\n\"type\":\"text/html\",\r\n\"value\": \"refer to SampleHTML\"\r\n}\r\n],\r\n\"blocks\":{\r\n\":male\": \"Mr.:name\",\r\n\":female\": \"Ms.:name\",\r\n\":neutral\":\":name\",\r\n\":webinar1\": \"Upgrade your PMskills on :date\"\r\n},\r\n\"custom_args\":{\r\n\"segment_name\": \"Webinar\", \"CampaignId\":\"xxxx\"\r\n},\r\n\"category\": [ \"Newsletter\", \"xxxx\"\r\n]\r\n}\r\n"
+				},
+				"url": "https://sapi.trackcampaigns.com/v1/api/sendmail"
+			},
+			"response": []
+		},
+		{
+			"name": "Send mail to multiple CCs/ BCCs",
+			"id": "6300db4a-afc0-4e92-9ddd-7d25472d1692",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"recipients\":[\r\n{\r\n\"to\":[\r\n{\r\n\"emailid\": \"john@example.com\", \"name\":\"john\"\r\n}\r\n],\r\n\"cc\":[\r\n{\r\n\"emailid\":\"jane@example.com\"\r\n},\r\n{\r\n\"emailid\": \"joy@example.com\", \"name\":\"Joy\"\r\n}\r\n],\r\n\"bcc\":[\r\n{\r\n\"emailid\": \"sam@example.com\", \"name\": \"sammohan\"\r\n},\r\n{\r\n\"emailid\": \"steve@example.com\", \"name\": \"SteveWaugh\"\r\n}\r\n],\r\n\"personalization_data\": { \":salutation\":\":male\",\r\n\":name\": \"Jony\", \":webinar_details\": \":webinar1\", \":date\": \"Jan1\"\r\n}\r\n}\r\n],\r\n\"subject\": \"Your Subject Line\", \"from\":{\r\n\"emailid\": \"from@example.com\", \"name\":\"FromName\"\r\n},\r\n\"mailtype\": \"PROMO\", \"content\":[\r\n{\r\n\"type\":\"text/html\",\r\n\"value\": \"refer to yourHTML\"\r\n}\r\n],\r\n\"blocks\":{\r\n\":male\": \"Mr.:name\",\r\n\":female\": \"Ms.:name\",\r\n\":neutral\":\":name\",\r\n\":webinar1\": \"Upgrade your skills:date\"\r\n},\r\n\"custom_args\":{\r\n\"segment_name\": \"Webinar\", \"CampaignId\":\"xxxx\"\r\n},\r\n\"category\": [ \"Newsletter\", \"xxxxx\"\r\n]\r\n}\r\n"
+				},
+				"url": "https://sapi.trackcampaigns.com/v1/api/sendmail"
+			},
+			"response": []
+		},
+		{
+			"name": "Send two different email to two different groups of recipients",
+			"id": "198c56da-cc87-4687-ab0b-75506957113d",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"recipients\":[\r\n{\r\n\"to\":[\r\n{\r\n\"emailid\": \"your email address\", \"name\":\"your name\"\r\n}\r\n],\r\n\"personalization_data\": { \":salutation\":\":gender\",\r\n\":name\": \"gender\", \":webinar_details\": \":webinar1\", \":date\": \"Jan1\"\r\n}\r\n},\r\n{\r\n\"to\":[\r\n{\r\n\"emailid\": \"your email address\", \"name\":\"your name\"\r\n}\r\n],\r\n\"personalization_data\": { \":salutation\":\":gender\",\r\n\":name\": \"Jane\", \":webinar_details\": \":webinar1\", \":date\": \"Jan1\"\r\n}\r\n}\r\n],\r\n\"subject\": \"Your subject line\", \"from\":{\r\n\"emailid\": \"from@example.com\", \"name\":\"FromName\"\r\n},\r\n\"mailtype\": \"PROMO\", \"content\":[\r\n{\r\n\"type\":\"text/html\",\r\n\"value\": \"refer to SampleHTML\"\r\n}\r\n],\r\n\"blocks\":{\r\n\":male\": \"Mr.:name\",\r\n\":female\": \"Ms.:name\",\r\n\":neutral\":\":name\",\r\n\":webinar1\": \"Upgrade your skills on :date\"\r\n},\r\n\"custom_args\":{\r\n\"segment_name\": \"Webinar\", \"CampaignId\":\"11121\"\r\n},\r\n\"category\": [ \"Newsletter\", \"city\"\r\n]\r\n} \r\n"
+				},
+				"url": "https://sapi.trackcampaigns.com/v1/api/sendmail"
+			},
+			"response": []
+		},
+		{
+			"name": "Send email using Templates",
+			"id": "e6f6082c-09bb-4f99-badf-c2925ab646f8",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"recipients\":[\r\n{\r\n\"to\":[\r\n{\r\n\"emailid\": \"Your email address\", \"name\":\"john\"\r\n}\r\n],\r\n\"personalization_data\": { \":salutation\":\":gender\",\r\n\":name\": \"Jony\", \":webinar_details\": \":webinar1\", \":date\": \"Jan1\"\r\n}\r\n}\r\n],\r\n\"from\":{\r\n\"emailid\": \"from@example.com\", \"name\":\"FromName\"\r\n},\r\n\"subject\": \"Your Subject Line\", \"mailtype\":\"PROMO\",\r\n\"content\":[\r\n{\r\n\"template_id\":\"d911f467aae5c4e15b8430a1819e1d3f\"\r\n}\r\n],\r\n\"blocks\":{\r\n\":male\": \"Mr.:name\",\r\n\":female\": \"Ms.:name\",\r\n\":neutral\":\":name\",\r\n\":webinar1\": \"Upgrade your skills on :date\"\r\n},\r\n\"custom_args\":{\r\n\"segment_name\": \"November Webinar\", \"CampaignId\":\"11121\"\r\n},\r\n\"category\": [ \"Newsletter\", \"City\"\r\n]\r\n}\r\n"
+				},
+				"url": "https://sapi.trackcampaigns.com/v1/api/sendmail"
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": {
+			"password": "6b82228348935f18eeb0a734312bcadb",
+			"username": "_usercc36d266f9827686"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "1a8add02-bf6f-43dd-b70f-fe7db8089b97",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "66288ff6-8484-4a87-ae85-8768a2e7b519",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
 }
